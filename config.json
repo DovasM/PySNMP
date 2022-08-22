@@ -1,0 +1,35 @@
+{
+     "address":"192.168.1.1",
+     "tests":[
+          {
+          "name":"serial",
+          "OID":"1.3.6.1.4.1.48690.1.1.0",
+          "ssh":"ubus call mnfinfo get_value '{\"key\":\"serial\"}'"
+          },
+          {
+          "name":"routerName.O",
+          "OID":"1.3.6.1.4.1.48690.1.2.0",
+          "ssh":"uci get system.system.routername"
+          },
+          {
+          "name":"productCode",
+          "OID":"1.3.6.1.4.1.48690.1.3.0",
+          "ssh":"ubus call mnfinfo get_value '{\"key\":\"name\"}'"
+          },
+          {
+          "name":"batchNumber",
+          "OID":"1.3.6.1.4.1.48690.1.4.0",
+          "ssh":"ubus call mnfinfo get_value '{\"key\":\"batch\"}'"
+          },
+          {
+          "name":"hardwareRevision",
+          "OID":"1.3.6.1.4.1.48690.1.5.0",
+          "ssh":"ubus call mnfinfo get_value '{\"key\":\"hwver\"}'"
+          },
+          {
+          "name":"fwVersion",
+          "OID":"1.3.6.1.4.1.48690.1.6.0",
+          "ssh":"uci get system.system.device_fw_version"
+          }
+     ]
+}
