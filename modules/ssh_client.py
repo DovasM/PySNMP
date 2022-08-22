@@ -13,7 +13,6 @@ class ConnectionHandler:
 
 
     def __init__(self, flags):
-        print(flags)
 
         if not self.__open_connection(flags.ip, flags.username, flags.password):
             raise Exception("Unable to connect to SSH server")
