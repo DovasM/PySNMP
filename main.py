@@ -1,6 +1,6 @@
 import modules.config_handler as ConfigHandler
-# import modules.test_handler as TestHandler
-# import modules.result_handler as ResultHandler
+import modules.test_handler as TestHandler
+import modules.result_handler as ResultHandler
 import modules.snmp_client as SNMPHandler
 import modules.ssh_client as ConnectionHandler
 import modules.terminal_handler as TerminalHandler
@@ -33,8 +33,8 @@ def init_modules():
         snmp = SNMPHandler.SNMPHandler(config.get_param("address"))
         ssh = ConnectionHandler.ConnectionHandler(flags)
         # __connHandler = __load_module(device.device_conn_select(flags.name), flags, config)
-        # tester = TestHandler.TestHandler(ssh, flags.name)
-        # resulter = ResultHandler.ResultHandler(config.get_param("results")["save_as"])
+        tester = TestHandler.TestHandler(snmp, ssh ,config)
+        resulter = ResultHandler.ResultHandler(config.get_param("results")["save_as"])
         
     except Exception as error:
         raise Exception (error)
@@ -44,13 +44,19 @@ def init_modules():
 def main():
     try:
         init_modules()
-        # print(config.get_comm())
-        # snmp.test_oid_comms(config.get_comm())s
+        # commands = "device"
+        # print(config.get_comm(commands))
+
+        # "ubus call vuci.network.mobile get_all_modems | grep version"
+        print(ssh.exec_command("gsmctl -y"))
+
+        # tester.test_commands()
+        # print(tester.get_results())
         # resulter.open_file(config.get_param("results")["path"])
         # resulter.save_results(tester.get_results())
         # resulter.close_file()
-        # print(snmp.get_results())
-        print(ssh.exec_command("uci get system.system.routername"))
+
+        # print(tester.get_results)
     except Exception as error:
         print(error)
 

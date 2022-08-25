@@ -25,35 +25,35 @@ class TerminalHandler:
 
     def test_print(self, results):
         if self.__passed == 1:
-            print('{}:Testing device                '.format(results["device"]))
-            print('{}:Connection type               '.format(results["connection"]))
+            # print('{}:Testing device                '.format(results["device"]))
+            # print('{}:Connection type               '.format(results["connection"]))
             print('{}/{}:Tests Count                  '.format(self.__passed, results["count"]))
             print(Fore.BLUE + '{}/{}:Tests passed             '.format(self.__test_pass,results["count"])+Style.RESET_ALL )
-            print('{}:The command under the test                '.format(results['command']))
-            print('{}:Result              '.format(results['response']))
-            if results['status'] == 'Passed':
-                print(Fore.GREEN + '{}:Test            '.format(results['status'])+Style.RESET_ALL , end="")
+            print('{}:The command under the test                '.format(results['name']))
+            # print('{}:Result              '.format(results['response']))
+            if results['status'] == True:
+                print(Fore.GREEN + 'Passed:Test            '+Style.RESET_ALL , end="")
                 self.__test_pass = self.__test_pass + 1
             else:
-                print(Fore.RED + '{}:Test               '.format(results['status'])+Style.RESET_ALL , end="")
+                print(Fore.RED + 'Failed:Test               '+Style.RESET_ALL , end="")
             sys.stdout.flush()
             self.__passed = self.__passed + 1
 
         else:
-            if results['status'] == 'Passed':
-                print(Fore.GREEN + '\r{}:Test             '.format(results['status'])+Style.RESET_ALL )
+            if results['status'] == True:
+                print(Fore.GREEN + '\rPassed:Test             '+Style.RESET_ALL )
                 self.__test_pass = self.__test_pass + 1
             else:
-                print(Fore.RED + '\r{}:Test                    '.format(results['status'])+Style.RESET_ALL )
-            print('\033[F\033[F{}:Result                   '.format(results['response']))
-            print('\033[F\033[F{}:The command under the test                '.format(results['command']))
+                print(Fore.RED + '\rFailed:Test                    '+Style.RESET_ALL )
+            # print('\033[F\033[F{}:Result                   '.format(results['response']))
+            print('\033[F\033[F{}:The command under the test                '.format(results['name']))
             print('\033[F\033[F{}/{}:Tests Passed/Count                     '.format(self.__passed, results["count"]))
             print(Fore.BLUE + '\033[F\033[F{}/{}:Tests passed                      '.format(self.__test_pass,results["count"])+Style.RESET_ALL )
-            print('\033[F\033[F{}:Connection type                  '.format(results["connection"]))
-            print('\033[F\033[F{}:Testing device              '.format(results["device"]))
-            print()
-            print()
-            print()
+            # print('\033[F\033[F{}:Connection type                  '.format(results["connection"]))
+            # print('\033[F\033[F{}:Testing device              '.format(results["device"]))
+            # print()
+            # print()
+            # print()
             print()
             print()
             self.__passed = self.__passed + 1

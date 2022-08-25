@@ -27,7 +27,7 @@ class ResultSaver:
             
 
     def save_results(self, results):
-        header = "Command,Expects,Status,Response\n"
+        header = "Command_name,Response\n"
         self.__write_to_file(header)
         for result in results:
             formatedString = self.__format_string(result)
@@ -42,5 +42,5 @@ class ResultSaver:
         return arg
 
     def __format_string(self, result):
-        return result["command"] + "," + str(result["expects"]) + "," + result["status"] + "," + str(result["response"]) +"\n"
+        return result["name"] + "," + str(result["status"]) +"\n"
 

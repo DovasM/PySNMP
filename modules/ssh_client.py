@@ -46,36 +46,41 @@ class ConnectionHandler:
 
     def exec_command(self, command):
         success = True
+        grep = False
         stdin, stdout, stderr = self.__ssh_client.exec_command(command)
         # print(''.join(stderr.readlines()))
         if stderr.readlines():
             success = False
-        return stdout.readlines()
+        comp_t = command.split()[0]
+        grep_c = command.split()[-2]
+        if grep_c == "grep":
+            grep = True
+        response = stdout.readlines()
+
+        response = getattr(self,"%s_compare" % comp_t)(response, grep)
+        return response
 
     def __del__(self):
         self.__close_connection()
 
-    def shell_exec_command(self, command):
-        try:
-            self.__ssh_channel = self.__ssh_client.invoke_shell()
-            self.__ssh_channel.send(command + "\n")
-
-            output = self.__ssh_channel.recv(9999).decode("ascii").splitlines()
-            return output
-        except Exception as error:
-            print(error)
 
 
 
-    def wait_until(self, output, timeout, period=0.25):
-        mustend = time.time() + timeout
-        while time.time() < mustend:
-            if output[-2] == 'OK' or output[-2] == 'FAIL':
-                return True, output[-2]
-            output = self.__ssh_channel.recv(9999).decode("ascii").splitlines()
-            # print(0)
-            if output[-2] == []:
-                continue
-            output = self.__ssh_channel.recv(9999).decode("ascii").splitlines()
-            time.sleep(period)
-        return False, 'Error'
+    def ubus_compare(self, ssh_response, grep):
+        if grep:
+            ssh_response = ssh_response[0].split()[-1].strip('"')
+        else:
+            ssh_response = ssh_response[1].split()[-1].strip('"')
+        return ssh_response
+
+
+    def uci_compare(self, ssh_response, grep):
+        ssh_response = ssh_response[0].strip('\n')
+        return ssh_response
+    
+    def gsmctl_compare(self, ssh_response, grep):
+        ssh_response = ssh_response[0].strip('\n')
+        return ssh_response
+
+
+

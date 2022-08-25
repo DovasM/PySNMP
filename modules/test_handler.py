@@ -1,56 +1,76 @@
 
 
+from imp import find_module
+from operator import mod
+
+
 class TestHandler:
 
-    __connection = None
+
+    __snmp_connection = None
+    __ssh_connection = None
+    __config = None
     __termHandler = None
     __device = None
     __results = []
 
-    def __init__(self, connection, device):
-        self.__connection = connection
-        self.__device = device
-        
-        self.__termHandler = self.__load_module()
-        if not self.__termHandler:
-            raise Exception("Unable to load terminal handler module")
+    def __init__(self, snmp_connection, ssh_connection ,config):
 
-    def __load_module(self):
+
+        self.__snmp_connection = snmp_connection
+        self.__ssh_connection = ssh_connection
+        self.__config = config
+
+        
+        self.__termHandler = __import__('modules.terminal_handler', fromlist=['modules'])
+        self.__termHandler= self.__termHandler.TerminalHandler()
+
+
+    def __load_case(self, path):
         module = None
         try:
-            module = __import__('modules.terminal_handler', fromlist=['modules'])
-            return module.TerminalHandler()
+            # __import__('modules.test_cases.{type}_case'.format(type), fromlist=['modules'])
+            module = __import__('modules.test_cases.{0}_case'.format(path), fromlist=['modules.test_cases'])
+            print(module)
+            return module.TestCase(self.__ssh_connection)
         except:
             return False      
 
-    def test_commands(self, commands):
+    def test_commands(self):
         
-        self.__connection.exec_command("/etc/init.d/gsmd stop\r")
-        
+        # self.__connection.exec_command("/etc/init.d/gsmd stop\r")
+
+        commands = self.__config.get_comm("chilli")
+        case = self.__load_case('chilli')
+        print(case)
         for command in commands:
             result = {}
             
-            response = self.test_command(command["command"], command["expects"], command["argument"])
-            result["command"] = command["command"]
-            result["expects"] = command["expects"]
-            result["status"] = response[0]
-            result["response"] = response[1]
-            result["device"] = self.__device
-            result["connection"] = "SSH"
+            ssh_response = getattr(case, command['method'])()
+            snmp_response = self.snmp_test_command(command["OID"])
+            
+            if ssh_response == snmp_response:
+                result["status"] = True
+            else:
+                result['status'] = False 
+
+            result["name"] = command["name"]
             result["count"] = len(commands)
-            self.__termHandler.test_print(result)
+
+            # self.__termHandler.test_print(result)
             self.__results.append(result)
             
-        self.__connection.exec_command("/etc/init.d/gsmd start\r")
+        # self.__connection.exec_command("/etc/init.d/gsmd start\r")
 
-    def test_command(self, command, expects, argument):
-        # command = 'gsmctl -A ' + command
-        response = self.__connection.shell_exec_command(command, argument)
-        
-        if response == expects:
-            return "Passed", response
-        else:
-            return "Failed", response
+
+
+    def snmp_test_command(self, OID):
+
+        response = self.__snmp_connection.get_oid_val(OID)
+
+        response = response.split()[-1]
+        return response
+
     
     def get_results(self):
         return self.__results

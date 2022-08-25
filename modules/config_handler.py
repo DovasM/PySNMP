@@ -36,8 +36,9 @@ class ConfigHandler:
         else:
             return None
 
-    def get_comm(self):
+    def get_comm(self, commands):
+        
         command_array = []
-        for find_dev in self.__config['tests']:
+        for find_dev in self.__config['test_cases'][commands]:
             command_array.append(find_dev)
         return command_array

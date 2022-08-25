@@ -1,0 +1,7 @@
+Command_name,Response
+serial,True
+routerName.O,True
+productCode,True
+batchNumber,True
+hardwareRevision,True
+fwVersion,True
