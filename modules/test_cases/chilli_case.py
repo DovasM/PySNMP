@@ -25,15 +25,15 @@ class TestCase:
         response = self.__connection.exec_command(command)
         return response
 
-    def get_session_count(self):
-        command = ""
-        response = self.__connection.exec_command(command)
-        return response
+    # def get_session_count(self):
+    #     command = ""
+    #     response = self.__connection.exec_command(command)
+    #     return response
 
-    def get_hss_index(self):
-        command = ""
-        response = self.__connection.exec_command(command)
-        return response
+    # def get_hss_index(self):
+    #     command = ""
+    #     response = self.__connection.exec_command(command)
+    #     return response
 
     def get_hss_MAC(self):
         command = "ubus call chilli list | grep ipAddress"
@@ -55,10 +55,10 @@ class TestCase:
         response = self.__connection.exec_command(command)
         return response
 
-    def get_hss_state(self):
-        command = ""
-        response = self.__connection.exec_command(command)
-        return response
+    # def get_hss_state(self):
+    #     command = ""
+    #     response = self.__connection.exec_command(command)
+    #     return response
 
     def get_hss_idle_timemout(self):
         command = "ubus call chilli list | grep idleTimeout"

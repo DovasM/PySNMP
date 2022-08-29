@@ -68,18 +68,18 @@ class ConnectionHandler:
 
     def ubus_compare(self, ssh_response, grep):
         if grep:
-            ssh_response = ssh_response[0].split()[-1].strip('"')
+            ssh_response = ssh_response[0].split()[-1].strip('","\n[')
         else:
-            ssh_response = ssh_response[1].split()[-1].strip('"')
+            ssh_response = ssh_response[1].split()[-1].strip('","\n[')
         return ssh_response
 
 
     def uci_compare(self, ssh_response, grep):
-        ssh_response = ssh_response[0].strip('\n')
+        ssh_response = ssh_response[0].strip('\n[')
         return ssh_response
     
     def gsmctl_compare(self, ssh_response, grep):
-        ssh_response = ssh_response[0].strip('\n')
+        ssh_response = ssh_response[0].strip('\n,"[')
         return ssh_response
 
 

@@ -33,9 +33,8 @@ class SNMPHandler:
             ContextData(),
             ObjectType(ObjectIdentity(oid)))
 
-
+        
         errorIndication, errorStatus, errorIndex, varBinds = next(iterator)
-
         if errorIndication:
             return(errorIndication)
 

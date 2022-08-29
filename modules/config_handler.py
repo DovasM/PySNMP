@@ -36,6 +36,12 @@ class ConfigHandler:
         else:
             return None
 
+    def get_test_cases(self):
+        test_cases = []
+        for find_case in self.__config['test_cases']:
+            test_cases.append(find_case)
+        return test_cases
+
     def get_comm(self, commands):
         
         command_array = []

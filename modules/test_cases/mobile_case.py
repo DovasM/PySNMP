@@ -113,4 +113,5 @@ class TestCase:
     def get_IP(self):
         command = "gsmctl --ip mob1s1a1"
         response = self.__connection.exec_command(command)
+        response = response.replace('N/A', '')
         return response
