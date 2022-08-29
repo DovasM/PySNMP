@@ -44,19 +44,18 @@ def init_modules():
 def main():
     try:
         init_modules()
-        # commands = "device"
+        # commands = "chilli"
         # print(config.get_comm(commands))
 
         # "ubus call vuci.network.mobile get_all_modems | grep version"
-        print(ssh.exec_command("gsmctl -y"))
-
-        # tester.test_commands()
+        # print(ssh.exec_command("gs"))
+        tester.test_commands()
         # print(tester.get_results())
         # resulter.open_file(config.get_param("results")["path"])
         # resulter.save_results(tester.get_results())
         # resulter.close_file()
 
-        # print(tester.get_results)
+        # print(tester.get_results())
     except Exception as error:
         print(error)
 
