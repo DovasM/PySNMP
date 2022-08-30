@@ -1,4 +1,3 @@
-import pysnmp
 from pysnmp.hlapi import *
 
 
@@ -6,23 +5,9 @@ from pysnmp.hlapi import *
 class SNMPHandler:
 
     __address = None
-    __results = []
 
     def __init__(self, address):
         self.__address = address
-
-    def test_oid_comms(self, oids):
-        for command in oids:
-            result = {}
-            
-            response = self.get_oid_val(command["OID"])
-            result["name"] = command["name"]
-            result["response"] = response
-            # self.__termHandler.test_print(result)
-            self.__results.append(result)
-
-    def get_results(self):
-        return self.__results
 
 
     def get_oid_val(self, oid):
@@ -44,5 +29,9 @@ class SNMPHandler:
 
         else:
             for varBind in varBinds:
-                return(' = '.join([x.prettyPrint() for x in varBind]))
+                varBind = ' = '.join([x.prettyPrint() for x in varBind])
+                varBind = varBind.split()
+                varBind = varBind[2:]
+                varBind = str(varBind).strip("'' [] ,").replace("', '", " ")
+                return(varBind)
                 

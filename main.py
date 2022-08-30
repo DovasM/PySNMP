@@ -11,17 +11,7 @@ ssh = None
 tester = None
 resulter = None
 device = None
-__connHandler = None
 snmp = None
-
-def __load_module(type, flags, config):
-        module = None
-        try:
-            module = __import__('modules.{type}'.format(type=type), fromlist=['modules'])
-            return module.ConnectionHandler(flags, config)
-        except Exception as error:
-
-            raise Exception (error)  
 
 
 def init_modules():
@@ -32,7 +22,6 @@ def init_modules():
         config = ConfigHandler.ConfigHandler("config.json")
         snmp = SNMPHandler.SNMPHandler(config.get_param("address"))
         ssh = ConnectionHandler.ConnectionHandler(flags)
-        # __connHandler = __load_module(device.device_conn_select(flags.name), flags, config)
         tester = TestHandler.TestHandler(snmp, ssh ,config)
         resulter = ResultHandler.ResultHandler(config.get_param("results")["save_as"])
         
@@ -43,19 +32,12 @@ def init_modules():
 
 def main():
     try:
-        init_modules()
-        # commands = "chilli"
-        # print(config.get_comm(commands))
-
-        # "ubus call vuci.network.mobile get_all_modems | grep version"
-        # print(ssh.exec_command("gs"))
-        tester.test_commands()
-        # print(tester.get_results())
-        # resulter.open_file(config.get_param("results")["path"])
-        # resulter.save_results(tester.get_results())
-        # resulter.close_file()
-
-        # print(tester.get_results())
+        while True:
+            init_modules()
+            tester.test_commands()
+            resulter.open_file(config.get_param("results")["path"])
+            resulter.save_results(tester.get_results())
+            resulter.close_file()
     except Exception as error:
         print(error)
 

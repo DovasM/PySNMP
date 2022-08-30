@@ -1,9 +1,7 @@
 import argparse
 from colorama import Fore, Back, Style
 import colorama
-import time
 import sys
-import curses
 
 class TerminalHandler:
 
@@ -19,18 +17,14 @@ class TerminalHandler:
         parser.add_argument("-u", "--username",dest ="username", help="User name", default=argparse.SUPPRESS, required=True)
         parser.add_argument("-p", "--password",dest = "password", help="Password", default=argparse.SUPPRESS, required=True)
         parser.add_argument("-i", "--ip",dest = "ip", help="IP address", default=argparse.SUPPRESS, required=True)
-        # parser.add_argument("-ftp", "--ftp",dest = "ftp", help="Save FTP Y/N", default=argparse.SUPPRESS)
         args = parser.parse_args()
         return args
 
     def test_print(self, results):
         if self.__passed == 1:
-            # print('{}:Testing device                '.format(results["device"]))
-            # print('{}:Connection type               '.format(results["connection"]))
             print('{}/{}:Tests Count                  '.format(self.__passed, results["count"]))
             print(Fore.BLUE + '{}/{}:Tests passed             '.format(self.__test_pass,results["count"])+Style.RESET_ALL )
             print('{}:The command under the test                '.format(results['name']))
-            # print('{}:Result              '.format(results['response']))
             if results['status'] == True:
                 print(Fore.GREEN + 'Passed:Test            '+Style.RESET_ALL , end="")
                 self.__test_pass = self.__test_pass + 1
@@ -45,15 +39,9 @@ class TerminalHandler:
                 self.__test_pass = self.__test_pass + 1
             else:
                 print(Fore.RED + '\rFailed:Test                    '+Style.RESET_ALL )
-            # print('\033[F\033[F{}:Result                   '.format(results['response']))
             print('\033[F\033[F{}:The command under the test                '.format(results['name']))
             print('\033[F\033[F{}/{}:Tests Passed/Count                     '.format(self.__passed, results["count"]))
             print(Fore.BLUE + '\033[F\033[F{}/{}:Tests passed                      '.format(self.__test_pass,results["count"])+Style.RESET_ALL )
-            # print('\033[F\033[F{}:Connection type                  '.format(results["connection"]))
-            # print('\033[F\033[F{}:Testing device              '.format(results["device"]))
-            # print()
-            # print()
-            # print()
             print()
             print()
             self.__passed = self.__passed + 1

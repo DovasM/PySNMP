@@ -36,12 +36,12 @@ class TestCase:
     #     return response
 
     def get_hss_MAC(self):
-        command = "ubus call chilli list | grep ipAddress"
+        command = "ubus call chilli list | grep macAddress"
         response = self.__connection.exec_command(command)
         return response
 
     def get_hss_IP(self):
-        command = "ubus call chilli list | grep idleTimeout"
+        command = "ubus call chilli list | grep ipAddress"
         response = self.__connection.exec_command(command)
         return response
 

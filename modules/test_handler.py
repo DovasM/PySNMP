@@ -1,9 +1,5 @@
 
 
-from distutils.cmd import Command
-from imp import find_module
-from operator import mod
-
 
 class TestHandler:
 
@@ -30,7 +26,6 @@ class TestHandler:
     def __load_case(self, path):
         module = None
         try:
-            # __import__('modules.test_cases.{type}_case'.format(type), fromlist=['modules'])
             module = __import__('modules.test_cases.{0}_case'.format(path), fromlist=['modules.test_cases'])
             return module.TestCase(self.__ssh_connection)
         except:
@@ -76,41 +71,41 @@ class TestHandler:
             count = count + len(commands)
         return count
 
+    def hex_to_string(self, hex):
+        if hex[:2] == '0x':
+            hex = hex[2:]
+        string_value = bytes.fromhex(hex).decode('utf-8')
+        return string_value
+
     def test_commands(self):
-        
-        # self.__connection.exec_command("/etc/init.d/gsmd stop\r")
-        result = {}
 
         test_cases = self.hwinfo(self.__config.get_test_cases())
-        result["count"] = self.count_comm(test_cases)
+        count = self.count_comm(test_cases)
         for test_case in test_cases:
             commands = self.__config.get_comm(test_case)
             case = self.__load_case(test_case)
             
 
             for command in commands:
-                
+                result = {}
 
                 ssh_response = getattr(case, command['method'])()
                 snmp_response = self.snmp_test_command(command["OID"])
 
-                if ssh_response == snmp_response:
+                if ssh_response in snmp_response:
                     result["status"] = True
                 else:
                     result['status'] = False 
-
                 result["name"] = command["name"]
-                
+                result["count"] = count
                 self.__termHandler.test_print(result)
                 self.__results.append(result)
-            
-        # self.__connection.exec_command("/etc/init.d/gsmd start\r")
-
 
 
     def snmp_test_command(self, OID):
         response = self.__snmp_connection.get_oid_val(OID)
-        response = response.split()[-1]
+        if response[:2] == '0x':
+            response = self.hex_to_string(response)
         return response
 
     

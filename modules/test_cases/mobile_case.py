@@ -26,7 +26,7 @@ class TestCase:
         return response
 
     def get_model(self):
-        command = "ubus call vuci.network.mobile modems_info | grep modem"
+        command = "ubus call vuci.network.mobile modems_info | grep -w \"modem\""
         response = self.__connection.exec_command(command)
         return response
 
@@ -83,6 +83,7 @@ class TestCase:
     def get_conn_state(self):
         command = "ubus call vuci.network.mobile mobile_status | grep connection"
         response = self.__connection.exec_command(command)
+        response = response.replace('\\n', "")
         return response
 
     def get_conn_type(self):
