@@ -4,8 +4,8 @@
 
 Iot testing program writen in python 3.9.5.
 
-The goal of the project is to have the means to connect the IoT device using SSH or Serial connection
-and using setuped AT commands to test the device. 
+The goal of the project is to have the means to connect the IoT device using SSH connection
+and using setuped SNMP protocol and OID value to test the device in real time while saving the results. 
 
 ## Usage
 0. Download this package with `go get` or `git clone`
@@ -14,37 +14,47 @@ and using setuped AT commands to test the device.
 	 
 	 git clone https://github.com/DovasM/PySNMP
 ```
-1. In config.json set your device and command settings to test
+1. In config.json are setuped settings, commands to test the device.
 
 ```
-"devices":[
-       {
-           "device":"RUTX11",
-           "connection":"ssh",
-           "commands":[
-                {
-                "command":"ATE1",
-                "expects":"OK",
-                "argument":""
-                },
+"devices":
+     "test_cases" : {
+          "device" : [
                {
-                   "command":"ATI",
-                   "expects":"OK",
-                   "argument":""
+               "name":"serial",
+               "OID":"1.3.6.1.4.1.48690.1.1.0",
+               "method" : "get_serial_num"
+               },
+               {
+               "name":"routerName.O",
+               "OID":"1.3.6.1.4.1.48690.1.2.0",
+               "method" : "get_name"
+               },
+               {
+               "name":"productCode",
+               "OID":"1.3.6.1.4.1.48690.1.3.0",
+               "method" : "get_product_code"
+               },   
+	   .....
+	   "mobile" : [
+               {
+               "name":"modemNum",
+               "OID":"1.3.6.1.4.1.48690.2.1.0",
+               "method" : "get_modem_num"
+               },
+               {
+               "name":"mIndex",
+               "OID":"1.3.6.1.4.1.48690.2.2.1.1.1",
+               "method" : "get_index"
                },
 ```
-2. In config.json set your FTP server settings
+2. In config.json set your directory to save tests
 
 ```
 "results":{
     "save_as":"csv",
     "path":""
- },
-    "ftp_connection":{
-        "address":"localhost",
-        "username":"studentas",
-        "password":"studentas"
-    }
+ }
 ```
 
 3. Start test with command
@@ -54,32 +64,18 @@ and using setuped AT commands to test the device.
 Settings you can use:
 
 ```
-usage: main.py [-h] -n NAME [-pt PT] [-u USERNAME] [-p PASSWORD] [-b BAUDRATE] [-i IP] [-ftp FTP]
-
+usage: main.py [-u USERNAME] [-p PASSWORD] [-i IP]
 optional arguments:
   -h, --help            show this help message and exit
-  -n NAME, --name NAME  Routers model
-  -pt PT, --port PT     Routers port
   -u USERNAME, --username USERNAME
                         User name
   -p PASSWORD, --password PASSWORD
                         Password
-  -b BAUDRATE, --baudrate BAUDRATE
-                        Serial baudrate
   -i IP, --ip IP        IP address
-  -ftp FTP, --ftp FTP   Save FTP Y/N
 ```
 
 ## Examples
 
 Testing with SSH connection:
 
-`sudo python3 main.py -n RUTX11 -i 192.168.1.1 -u root -p Admin123`
-
-Testing with Serial connection:
-
-`sudo python main.py -n TRM240 -pt /dev/ttyDEV0`
-
-Saving to FTP server:
-
-`sudo python main.py -n TRM240 -pt /dev/ttyDEV0 -ftp Y`
+`sudo python3 main.py -i 192.168.1.1 -u root -p Admin123`
