@@ -20,7 +20,7 @@ def init_modules():
         terminal_flags = TerminalHandler.TerminalHandler()
         flags = terminal_flags.get_args()
         config = ConfigHandler.ConfigHandler("config.json")
-        snmp = SNMPHandler.SNMPHandler(config.get_param("address"))
+        snmp = SNMPHandler.SNMPHandler(flags.ip)
         ssh = ConnectionHandler.ConnectionHandler(flags)
         tester = TestHandler.TestHandler(snmp, ssh ,config)
         resulter = ResultHandler.ResultHandler(config.get_param("results")["save_as"])
