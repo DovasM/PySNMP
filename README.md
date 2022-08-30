@@ -10,9 +10,9 @@ and using setuped SNMP protocol and OID value to test the device in real time wh
 ## Usage
 0. Download this package with `go get` or `git clone`
 ```
-   go get -u github.com/DovasM/PySNMP
+   go get -u github.com/DovasM/Rutos_PySNMP_tester
 	 
-	 git clone https://github.com/DovasM/PySNMP
+	 git clone https://github.com/DovasM/Rutos_PySNMP_tester
 ```
 1. In config.json are setuped settings, commands to test the device.
 
